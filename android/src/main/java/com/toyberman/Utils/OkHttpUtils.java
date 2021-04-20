@@ -36,7 +36,7 @@ import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.logging.HttpLoggingInterceptor;
+//import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by Max Toyberman on 2/11/18.
@@ -54,6 +54,7 @@ public class OkHttpUtils {
     private static SSLContext sslContext;
     private static String content_type = "application/json; charset=utf-8";
     public static MediaType mediaType = MediaType.parse(content_type);
+    private static String mCookie = "";
 
     public static OkHttpClient buildOkHttpClient(CookieJar cookieJar, String domainName, ReadableArray certs, ReadableMap options) {
 
@@ -61,8 +62,8 @@ public class OkHttpUtils {
         CertificatePinner certificatePinner = null;
         if (!clientsByDomain.containsKey(domainName)) {
             // add logging interceptor
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
             clientBuilder.cookieJar(cookieJar);
@@ -79,9 +80,9 @@ public class OkHttpUtils {
             }
 
 
-            if (BuildConfig.DEBUG) {
-                clientBuilder.addInterceptor(logging);
-            }
+//            if (BuildConfig.DEBUG) {
+//                clientBuilder.addInterceptor(logging);
+//            }
 
             client = clientBuilder
                     .build();
@@ -115,15 +116,15 @@ public class OkHttpUtils {
 
         if (defaultClient == null) {
 
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+//            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+//            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
             clientBuilder.cookieJar(cookieJar);
 
-            if (BuildConfig.DEBUG) {
-                clientBuilder.addInterceptor(logging);
-            }
+//            if (BuildConfig.DEBUG) {
+//                clientBuilder.addInterceptor(logging);
+//            }
 
             defaultClient = clientBuilder.build();
         }
@@ -290,6 +291,7 @@ public class OkHttpUtils {
 
         }
         return requestBuilder
+                .addHeader("Cookie", mCookie)
                 .url(hostname)
                 .method(method, body)
                 .build();
@@ -315,6 +317,8 @@ public class OkHttpUtils {
         if (map.hasKey("content-type")) {
             content_type = map.getString("content-type");
             mediaType = MediaType.parse(content_type);
+        } else if (map.hasKey("cookie")) {
+            mCookie = map.getString("cookie");
         }
     }
 }
