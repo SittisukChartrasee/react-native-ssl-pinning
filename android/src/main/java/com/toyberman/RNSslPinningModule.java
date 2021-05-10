@@ -63,7 +63,7 @@ public class RNSslPinningModule extends ReactContextBaseJavaModule {
             @Override
             public synchronized void saveFromResponse(HttpUrl url, List<Cookie> unmodifiableCookieList) {
                 for (Cookie cookie : unmodifiableCookieList) {
-                    setCookie(url, cookie);
+                    // setCookie(url, cookie);
                 }
             }
 

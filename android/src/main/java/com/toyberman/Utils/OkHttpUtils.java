@@ -54,7 +54,6 @@ public class OkHttpUtils {
     private static SSLContext sslContext;
     private static String content_type = "application/json; charset=utf-8";
     public static MediaType mediaType = MediaType.parse(content_type);
-    private static String mCookie = "";
 
     public static OkHttpClient buildOkHttpClient(CookieJar cookieJar, String domainName, ReadableArray certs, ReadableMap options) {
 
@@ -291,7 +290,6 @@ public class OkHttpUtils {
 
         }
         return requestBuilder
-                .addHeader("Cookie", mCookie)
                 .url(hostname)
                 .method(method, body)
                 .build();
@@ -317,8 +315,6 @@ public class OkHttpUtils {
         if (map.hasKey("content-type")) {
             content_type = map.getString("content-type");
             mediaType = MediaType.parse(content_type);
-        } else if (map.hasKey("cookie")) {
-            mCookie = map.getString("cookie");
         }
     }
 }
